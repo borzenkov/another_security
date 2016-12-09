@@ -4,15 +4,41 @@
          xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <http>
+    <!--<http auto-config="true" use-expressions="true">
+
         <intercept-url pattern="/**" access="hasRole('USER')"/>
+        &lt;!&ndash;<intercept-url pattern="/content/*" access="isAuthenticated()"/>&ndash;&gt;
+
         <form-login/>
+
         <logout/>
+
     </http>
 
     <user-service>
         <user name="user" password="user" authorities="ROLE_USER"/>
-        <user name="admin" password="admin" authorities="ROLE_ADMIN"/>
-    </user-service>
+        <user name="admin" password="admin" authorities="ROLE_ADMIN, ROLE_USER"/>
+    </user-service>-->
+
+    <http auto-config="true">
+        <intercept-url pattern="/**" access="hasRole('USER')" />
+        <form-login/><!--
+                login-page="/login"
+                default-target-url="/login"
+                authentication-failure-url="/login?error"
+                username-parameter="username"
+                password-parameter="password" />
+        <logout logout-success-url="/login?logout" />-->
+        <!-- enable csrf protection -->
+        <csrf/>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="user" password="user" authorities="ROLE_USER" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
 
 </b:beans>
